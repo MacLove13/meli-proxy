@@ -1,0 +1,2 @@
+class LimitIpPath < ApplicationRecord
+end

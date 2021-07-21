@@ -1,0 +1,2 @@
+class IpHistory < ApplicationRecord
+end

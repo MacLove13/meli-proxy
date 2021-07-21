@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ip: MyString
+  path: MyString
+  max_requests_hour: 1
+  max_requests_day: 1
+
+two:
+  ip: MyString
+  path: MyString
+  max_requests_hour: 1
+  max_requests_day: 1

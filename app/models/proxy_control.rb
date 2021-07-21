@@ -1,0 +1,2 @@
+class ProxyControl < ApplicationRecord
+end
