@@ -2,14 +2,14 @@ class ApplicationServiceProxy < Rack::Proxy
   def perform_request(env)
     @request = Rack::Request.new(env)
 
+    return @app.call(env) if @request.path =~ %r{^/monitor}
+
     path_exceded_limit = check_path_exceded_request_limits
     exceded_limit = check_exceded_request_limits unless path_exceded_limit
 
     if exceded_limit || path_exceded_limit
       env['PATH_INFO'] = '/proxy/show'
       env['ERROR_INFO'] = 'Você excedeu o limite de requests.'
-      @app.call(env)
-    elsif @request.path =~ %r{^/monitor}
       @app.call(env)
     else
       api = URI(ENV['SERVICE_URL'])

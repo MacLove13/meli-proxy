@@ -1,2 +1,32 @@
-<h1>Monitor#index</h1>
-<p>Find me in app/views/monitor/index.html.erb</p>
+<div class="container-flex monitor">
+
+  <div class="row mt-4">
+    <div class="col-md-12 text-center p-2" style="background-color: black;">
+      <h1>Painel de Monitoramento</h1>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <h2 class="fw-light">Requests por dia</h2>
+      <%= line_chart IpHistory.group_by_day(:created_at).count %>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <hr/>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <h2 class="fw-light">Requests por semana</h2>
+      <%= line_chart IpHistory.group_by_day_of_week(:created_at, format: "%a").count  %>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <hr/>
+    <div class="col-md-10">
+      <%= path_request_rank %>
+    </div>
+  </div>
+</div>
