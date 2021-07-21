@@ -51,6 +51,4 @@ test:
 #
 production:
   <<: *default
-  database: meli_proxy_production
-  username: meli_proxy
-  password: <%= ENV['MELI_PROXY_DATABASE_PASSWORD'] %>
+  url: mysql2://u9zne9bxgds0ux1y:epxqvz4fbrnbyuex@ohunm00fjsjs1uzy.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/zonyho32v4yv6gec
