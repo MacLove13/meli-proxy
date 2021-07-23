@@ -1,0 +1,37 @@
+<%= form_with(model: limit_ip_path) do |form| %>
+  <% if limit_ip_path.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(limit_ip_path.errors.count, "error") %> prohibited this limit_ip_path from being saved:</h2>
+
+      <ul>
+        <% limit_ip_path.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :ip %>
+    <%= form.text_field :ip, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :path %>
+    <%= form.text_field :path, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :max_requests_hour %>
+    <%= form.number_field :max_requests_hour, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :max_requests_day %>
+    <%= form.number_field :max_requests_day, class: 'form-control' %>
+  </div>
+
+  <div class="actions mt-4">
+    <%= form.submit 'Create new rule', class: 'btn btn-primary' %>
+  </div>
+<% end %>

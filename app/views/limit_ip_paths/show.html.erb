@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row mt-2">
+    <div class="col-md-12">
+      <% if notice.present? %>
+        <div class="alert alert-info" role="alert">
+          <%= notice %>
+        </div>
+      <% end %>
+
+      <h2>Looking at an existing rule</h2>
+
+      <p>
+        <strong>Ip:</strong>
+        <%= @limit_ip_path.ip %>
+      </p>
+
+      <p>
+        <strong>Path:</strong>
+        <%= @limit_ip_path.path %>
+      </p>
+
+      <p>
+        <strong>Max requests hour:</strong>
+        <%= @limit_ip_path.max_requests_hour %>
+      </p>
+
+      <p>
+        <strong>Max requests day:</strong>
+        <%= @limit_ip_path.max_requests_day %>
+      </p>
+
+      <%= link_to 'Edit', edit_limit_ip_path_path(@limit_ip_path) %> |
+      <%= link_to 'Back', limit_ip_paths_path %>
+    </div>
+  </div>
+</div>

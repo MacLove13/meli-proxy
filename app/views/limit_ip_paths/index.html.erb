@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <p id="notice"><%= notice %></p>
+
+      <h1>Custom request rules</h1>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Ip</th>
+            <th>Path</th>
+            <th>Max requests hour</th>
+            <th>Max requests day</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @limit_ip_paths.each do |limit_ip_path| %>
+            <tr>
+              <td><%= limit_ip_path.ip %></td>
+              <td><%= limit_ip_path.path %></td>
+              <td><%= limit_ip_path.max_requests_hour %></td>
+              <td><%= limit_ip_path.max_requests_day %></td>
+              <td><%= link_to 'Show', limit_ip_path %></td>
+              <td><%= link_to 'Edit', edit_limit_ip_path_path(limit_ip_path) %></td>
+              <td><%= link_to 'Destroy', limit_ip_path, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <br>
+
+      <%= link_to 'Create new rule', new_limit_ip_path_path, class: 'btn btn-primary' %>
+    </div>
+  </div>
+</div>

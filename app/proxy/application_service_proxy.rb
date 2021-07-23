@@ -2,30 +2,37 @@ class ApplicationServiceProxy < Rack::Proxy
   def perform_request(env)
     @request = Rack::Request.new(env)
 
-    return @app.call(env) if @request.path =~ %r{^/monitor} || @request.path =~ %r{^/assets}
+    return @app.call(env) if @request.path =~ %r{^/monitor} || @request.path =~ %r{^/assets} || @request.path =~ %r{^/admin}
 
-    path_exceded_limit = check_path_exceded_request_limits
-    exceded_limit = check_exceded_request_limits unless path_exceded_limit
-
-    if exceded_limit || path_exceded_limit
-      env['PATH_INFO'] = '/proxy/show'
-      env['ERROR_INFO'] = 'Você excedeu o limite de requests.'
-      @app.call(env)
+    if custom_rule.present?
+      return request_limit_exceeded(env) if count_ip_in_path_requests_today > custom_rule.max_requests_day
+      return request_limit_exceeded(env) if ip_in_path_requests_in_last_hour > custom_rule.max_requests_hour
     else
-      api = URI(ENV['SERVICE_URL'])
+      path_exceded_limit = check_path_exceded_request_limits
+      exceded_limit = check_exceded_request_limits unless path_exceded_limit
 
-      env["HTTP_HOST"] = api.host
-
-      # This is the only path that needs to be set currently on Rails 5 & greater
-      env['PATH_INFO'] = @request.path
-
-      # don't send your sites cookies to target service, unless it is a trusted internal service that can parse all your cookies
-      env['HTTP_COOKIE'] = ''
-
-      create_ip_history
-
-      super(env)
+      return request_limit_exceeded(env) if exceded_limit || path_exceded_limit
     end
+
+    api = URI(ENV['SERVICE_URL'])
+
+    env["HTTP_HOST"] = api.host
+
+    # This is the only path that needs to be set currently on Rails 5 & greater
+    env['PATH_INFO'] = @request.path
+
+    # don't send your sites cookies to target service, unless it is a trusted internal service that can parse all your cookies
+    env['HTTP_COOKIE'] = ''
+
+    create_ip_history
+
+    super(env)
+  end
+
+  def request_limit_exceeded(env)
+    env['PATH_INFO'] = '/proxy/show'
+    env['ERROR_INFO'] = 'You have exceeded the request limit.'
+    @app.call(env)
   end
 
   private
@@ -83,6 +90,16 @@ class ApplicationServiceProxy < Rack::Proxy
     path_history.filter{ |history| history.created_at >= Time.now - 1.hour }.size
   end
 
+  def count_ip_in_path_requests_today
+    return 0 unless ip_in_path_custom_rule
+    ip_in_path_custom_rule.count
+  end
+
+  def ip_in_path_requests_in_last_hour
+    return 0 unless ip_in_path_custom_rule
+    ip_in_path_custom_rule.filter{ |history| history.created_at >= Time.now - 1.hour }.size
+  end
+
   def create_ip_history
     IpHistory.create(
       ip: @request.ip,
@@ -90,12 +107,20 @@ class ApplicationServiceProxy < Rack::Proxy
     )
   end
 
+  def custom_rule
+    LimitIpPath.where(path: @request.path, ip: @request.ip)&.first
+  end
+
+  def ip_in_path_custom_rule
+    IpHistory.where(ip: @request.ip, path: @request.path, created_at: Time.now.beginning_of_day..Time.now)
+  end
+
   def path_history
-    @path_history ||= IpHistory.where(path: @request.path, created_at: Time.now.beginning_of_day..Time.now)
+    IpHistory.where(path: @request.path, created_at: Time.now.beginning_of_day..Time.now)
   end
 
   def ip_history
-    @ip_history ||= IpHistory.where(ip: @request.ip, created_at: Time.now.beginning_of_day..Time.now)
+    IpHistory.where(ip: @request.ip, created_at: Time.now.beginning_of_day..Time.now)
   end
 
   def proxy_control
