@@ -1,24 +1,17 @@
-# README
+## Meli Proxy
+A project aimed at the Challenge suggested by Mercado Livre, where a Proxy must be built to use the free market API with monitoring.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Request Flow
 
-Things you may want to cover:
+![Alt text](documentation/images/flow.jpg?raw=true "Request Flow")
 
-* Ruby version
+# Use Models Flow
 
-* System dependencies
+![Alt text](documentation/images/models.jpg?raw=true "Models")
 
-* Configuration
+# Dependencies
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- rack-proxy (https://github.com/ncr/rack-proxy) To rewrite the request and create the "Proxy"
+- Bootstrap 5 In Front-end
+- Chartkick (https://chartkick.com) In monitoring charts
+- Groupdate (https://github.com/ankane/groupdate) In monitoring charts
