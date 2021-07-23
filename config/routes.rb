@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   
   namespace 'monitor' do
     get '/', action: :index
+
+    namespace :api do
+      get :index
+    end
   end
   
   get 'proxy/show'
