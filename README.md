@@ -1,6 +1,19 @@
 ## Meli Proxy
 A project aimed at the Challenge suggested by Mercado Livre, where a Proxy must be built to use the free market API with monitoring.
 
+# Quick access
+- /monitor -> Follow the monitoring of requests
+- /monitor/api -> Monitoring APIs
+- /admin -> Tracking and managing custom rules by IP
+
+# Heroku
+The application is available on heroku for testing.<br/>
+Base URL: https://meli-p.herokuapp.com/  
+Monitor: https://meli-p.herokuapp.com/monitor  
+Admin: https://meli-p.herokuapp.com/admin  
+API: https://meli-p.herokuapp.com/monitor/api/index  
+[See API Documentation](documentation/API.md)
+
 # Request Flow
 
 ![Alt text](documentation/images/flow.jpg?raw=true "Request Flow")
@@ -75,3 +88,4 @@ Started GET "/docs" for ::1 at 2021-07-23 16:32:42 -0300
 - Bootstrap 5 In Front-end
 - Chartkick (https://chartkick.com) In monitoring charts
 - Groupdate (https://github.com/ankane/groupdate) In monitoring charts
+- Kaminari (https://github.com/kaminari/kaminari) For pagination
