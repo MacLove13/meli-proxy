@@ -1,32 +1,60 @@
 <div class="container-flex monitor">
 
-  <div class="row mt-4">
-    <div class="col-md-12 text-center p-2" style="background-color: black;">
-      <h1>Painel de Monitoramento</h1>
+  <div class="row">
+    <div class="col-md-12 text-center p-2 bg-dark">
+      <h1>Monitoring Panel</h1>
     </div>
   </div>
 
-  <div class="row text-center">
+  <div class="row text-center m-4">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-      <h2 class="fw-light">Requests por dia</h2>
-      <%= line_chart IpHistory.group_by_day(:created_at).count %>
+      <h2 class="fw-light">Requests in the last 24 hours</h2>
+      <%= line_chart IpHistory.group_by_hour(:created_at, last: 24).count %>
     </div>
   </div>
 
-  <div class="row text-center">
+  <div class="row text-center m-4">
     <hr/>
     <div class="col-md-1"></div>
     <div class="col-md-10">
-      <h2 class="fw-light">Requests por semana</h2>
-      <%= line_chart IpHistory.group_by_day_of_week(:created_at, format: "%a").count  %>
+      <h2 class="fw-light">Requests in the last 7 days</h2>
+      <%= line_chart IpHistory.group_by_day(:created_at, last: 7).count %>
     </div>
   </div>
 
-  <div class="row text-center">
+  <div class="row text-center m-4">
     <hr/>
+    <div class="col-md-1"></div>
     <div class="col-md-10">
-      <%= path_request_rank %>
+      <h2 class="fw-light">Requests in the last 4 weeks</h2>
+      <%= line_chart IpHistory.group_by_week(:created_at, last: 8).count  %>
+    </div>
+  </div>
+
+  <div class="row text-center m-4">
+    <hr/>
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <h2 class="fw-light">Most used paths (Everytime)</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Path</th>
+            <th scope="col">Requests</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% path_request_rank.each_with_index do |path, index| %>
+            <tr>
+              <th scope="row"><%= index + 1 %></th>
+              <td><%= path[0] %></td>
+              <td><%= path[1] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

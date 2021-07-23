@@ -2,7 +2,7 @@ class ApplicationServiceProxy < Rack::Proxy
   def perform_request(env)
     @request = Rack::Request.new(env)
 
-    return @app.call(env) if @request.path =~ %r{^/monitor}
+    return @app.call(env) if @request.path =~ %r{^/monitor} || @request.path =~ %r{^/assets}
 
     path_exceded_limit = check_path_exceded_request_limits
     exceded_limit = check_exceded_request_limits unless path_exceded_limit
